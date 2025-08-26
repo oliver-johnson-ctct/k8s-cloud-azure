@@ -1,5 +1,5 @@
 variable "suffix" {
-  description = "Suffix for resource names"
+  description = "Suffix for resource names - Hamish didn't use"
   type        = number
   default     = 2
 }
