@@ -50,3 +50,36 @@ jobs:
       - name: Terraform Apply (on workflow_dispatch or main)
         if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve tfplan
+
+      - name: Read TF outputs (RG & AKS)
+        id: tfout
+        run: |
+          echo "rg=$(terraform output -raw rg_name)" >> $GITHUB_OUTPUT
+          echo "aks=$(terraform output -raw aks_name)" >> $GITHUB_OUTPUT
+
+      # ---  install kubectl ---
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: latest
+
+      # ---  get kubecontext for the AKS cluster ---
+      - name: Get AKS credentials
+        run: |
+          az aks get-credentials \
+            --resource-group "${{ steps.tfout.outputs.rg }}" \
+            --name "${{ steps.tfout.outputs.aks }}" \
+            --admin \
+            --overwrite-existing
+
+      # (optional) wait until nodes are ready to avoid flakiness
+      - name: Wait for nodes
+        run: |
+          for i in {1..30}; do
+            kubectl get nodes && break
+            echo "Waiting for AKS nodes to be ready..."; sleep 10
+          done
+
+      # ---  apply manifest ---
+      - name: kubectl apply
+        run: kubectl apply -f deployment.yml
