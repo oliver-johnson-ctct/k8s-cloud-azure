@@ -61,7 +61,7 @@ variable "nodepool_name" {
 variable "node_vm_size" {
 	description = "VM size"
 	type        = string
-	default     = "Standard_DS2_v2"
+	default     = "Standard_D2as_v5"
 }
 
 variable "node_count" {
