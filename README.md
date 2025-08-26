@@ -1,10 +1,19 @@
-  #  (Azure): AKS + Terraform + GitHub Actions
+#  (Azure): AKS + Terraform + GitHub Actions
 
   Deploy an AKS cluster using Terraform driven by GitHub Actions.
 
 Fork or clone  https://github.com/HeyMo0sh/k8s-cloud-azure.git
 
-Edit variables.tf and change:
+**ASK HAMISH FOR:**
+
+`ARM_CLIENT_ID`
+`ARM_CLIENT_SECRET`
+`ARM_TENANT_ID`
+`ARM_SUBSCRIPTION_ID`
+
+set these up as repository secrets in GitHub
+
+*Edit variables.tf and change:*
 
 ``` text 
 variable "resource_group_name" {
@@ -55,7 +64,7 @@ variable "service_cidr" {
 	default     = "10.74.1.32/26"
 ```
 
-to your designated number (ie Edwin is 5)
+*to your designated number (ie Edwin is 5)*
 
 ``` text 
 
@@ -108,7 +117,7 @@ variable "service_cidr" {
 
 ```
 
-Complain to Hamish and ask why he didn't do:
+***Complain to Hamish and ask why he didn't do***
 
 ``` text
 locals {
@@ -117,23 +126,23 @@ locals {
 
 ```
 
-Commit and push to your repo
-
-Hopefully it builds a cluster....
-
 **Relish in his discomfort**
 
-Go into Azure Cloud Shell 
+*Commit and push to your repo*
+
+*Hopefully it builds a cluster....*
+
+*Go into Azure Cloud Shell*
 
 OR
 
-connect in a terminal ( you do need Azure CLI)
+*connect in a terminal ( you do need Azure CLI)*
 
 ``` bash
 az login
 ```
 
-run the following commands
+*run the following commands*
 
 ```bash
 az account set --subscription 7c0e8c21-980c-4a6a-9f75-ef24d677baf8
@@ -185,7 +194,9 @@ go to terraform-azure.yml and uncomment the last bits:
 
 ```
 
-commit and push and go check GitHub actions
+*commit and push and go check GitHub actions*
+
+```text
 
 You can now  do this:
 
@@ -196,11 +207,13 @@ kubectl get svc
 curl the IP address of the Load Balancer note the pod that we hit
 do it again note the pod that we hit
 
+```
+
 **Like we did yesterday after our `manual` deploy**
 
 ## last bit
 
-In aks.tf file uncomment this:
+*In aks.tf file uncomment this:*
 
 ``` text
 # resource "azurerm_kubernetes_cluster_node_pool" "additional" {
@@ -212,7 +225,7 @@ In aks.tf file uncomment this:
 # }
 ```
 
-Commit/push and hopefully once it has built
+*Commit/push and hopefully once it has built*
 
 ```bash
 
@@ -220,4 +233,4 @@ kubectl get nodes
 
 ```
 
-we had additional nodes
+**we have additional nodes**
