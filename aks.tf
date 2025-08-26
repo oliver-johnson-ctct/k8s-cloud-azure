@@ -10,7 +10,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
     node_count           = var.node_count
     vm_size              = var.node_vm_size
     vnet_subnet_id       = azurerm_subnet.subnet_nodes.id
-    orchestrator_version = var.kubernetes_version
   }
   network_profile {
     network_plugin     = "azure"
