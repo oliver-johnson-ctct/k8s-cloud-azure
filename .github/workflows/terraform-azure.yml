@@ -6,7 +6,7 @@ on:
     branches: [ main ]
     paths:
       - '**/*.tf'
-      - '.github/workflows/terraform-zzure.yml'
+      - '.github/workflows/terraform-azure.yml'
 
 permissions:
   contents: read
