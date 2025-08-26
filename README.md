@@ -1,50 +1,188 @@
-  # One‑Hour Lab (Azure): AKS + Terraform + GitHub Actions
+  #  (Azure): AKS + Terraform + GitHub Actions
 
   Deploy an AKS cluster using Terraform driven by GitHub Actions.
 
-  ## Prereqs
-  - Azure subscription (Contributor on target scope)
-  - GitHub repo with permission to set secrets
-  - Optional: Azure CLI and kubectl locally
+Fork or clone  https://github.com/HeyMo0sh/k8s-cloud-azure.git
 
-  ## Auth options (pick ONE)
-  ### A) OIDC (recommended)
-  1. Create an **App Registration**; grant **Contributor** at subscription or RG.
-  2. In GitHub → Settings → Actions → OIDC: add a **Federated Credential** for this repo/branch.
-  3. Set repo secrets:
-     - `AZURE_CLIENT_ID`
-     - `AZURE_TENANT_ID`
-     - `AZURE_SUBSCRIPTION_ID`
+Edit variables.tf and change:
 
-  ### B) Legacy secret
-  Create a service principal:
-  ```bash
-  az ad sp create-for-rbac \
---name aks-lab-sp \
---role Contributor \
---scopes /subscriptions/<SUBSCRIPTION_ID> \
---sdk-auth
-  ```
-  Put JSON into repo secret `AZURE_CREDENTIALS`.
+``` text 
+variable "resource_group_name" {
+	description = "Resource group name"
+	type        = string
+	default     = "rg-trimble-001"
+}
 
-  ## Run the workflow
-  - Actions → **Terraform AKS CI** → Run
-  - Terraform will `init`, `plan`, `apply` in `azure/terraform`
+variable "create_rg" {
+  description = "Create the RG (true) or reference an existing one (false)"
+  type        = bool
+  default     = true
+}
 
-  ## Variables (defaults)
-  - Region: `australiaeast`
-  - VNet: `10.74.74.0/26`; Subnet: `10.74.74.0/27`
-  - AKS: `aks-cluster-002`; Node pool: `npapps001`
+variable "prefix" {
+	description = "Name prefix"
+	type        = string
+	default     = "aks"
+}
 
-  ## Validate
-  ```bash
-  az aks get-credentials -g rg-aksdemo -n aks-cluster-002 --admin --overwrite-existing
-  kubectl get nodes -o wide
-  ```
+variable "aks_name" {
+	description = "AKS name"
+	type        = string
+	default     = "aks-cluster-001"
+}
 
-  ## Clean up
-  ```bash
-  terraform -chdir=azure/terraform destroy -auto-approve
-  # or:
-  az group delete -n rg-aksdemo -y
-  ```
+variable "vnet_address_space" {
+	description = "VNet CIDR"
+	type        = string
+	default     = "10.74.1.0/24"
+}
+
+variable "subnet_address_prefix" {
+  description = "Subnet CIDR"
+  type        = string
+  default     = "10.74.1.0/26"
+}
+
+variable "dns_service_ip" {
+	description = "DNS service IP for AKS"
+	type        = string
+	default     = "10.74.1.33"
+}
+
+variable "service_cidr" {
+	description = "Service CIDR for AKS"
+	type        = string
+	default     = "10.74.1.32/26"
+```
+
+to your designated number (ie Edwin is 5)
+
+``` text 
+
+variable "resource_group_name" {
+	description = "Resource group name"
+	type        = string
+	default     = "rg-trimble-005"
+}
+
+variable "create_rg" {
+  description = "Create the RG (true) or reference an existing one (false)"
+  type        = bool
+  default     = true
+}
+
+variable "prefix" {
+	description = "Name prefix"
+	type        = string
+	default     = "aks"
+}
+
+variable "aks_name" {
+	description = "AKS name"
+	type        = string
+	default     = "aks-cluster-005"
+}
+
+variable "vnet_address_space" {
+	description = "VNet CIDR"
+	type        = string
+	default     = "10.74.5.0/24"
+}
+
+variable "subnet_address_prefix" {
+  description = "Subnet CIDR"
+  type        = string
+  default     = "10.74.5.0/26"
+}
+
+variable "dns_service_ip" {
+	description = "DNS service IP for AKS"
+	type        = string
+	default     = "10.74.5.33"
+}
+
+variable "service_cidr" {
+	description = "Service CIDR for AKS"
+	type        = string
+	default     = "10.74.5.32/26"
+
+```
+
+Complain to Hamish and ask why he didn't do:
+
+``` text
+locals {
+  full_prefix = "${var.prefix}${var.suffix}"
+}
+
+```
+
+Commit and push to your repo
+
+Hopefully it builds a cluster....
+
+**Relish in his discomfort**
+
+Go into Azure Cloud Shell 
+
+OR
+
+connect in a terminal ( you do need Azure CLI)
+
+``` bash
+az login
+```
+
+run the following commands
+
+```bash
+az account set --subscription 7c0e8c21-980c-4a6a-9f75-ef24d677baf8
+# I am doing this for cluster 005 - change to your number
+az aks get-credentials --resource-group rg-trimble-005 --name aks-cluster-005 --overwrite-existing
+
+kubectl get deployments --all-namespaces=true
+
+kubectl get nodes
+
+kubectl get pods
+
+```
+
+## but there is nothing there (!!)
+
+### Change stuff and push again
+
+```text 
+
+go to terraform-azure.yml and uncomment the last bits:
+
+      # # ---  install kubectl ---
+      # - name: Install kubectl
+      #   uses: azure/setup-kubectl@v4
+      #   with:
+      #     version: latest
+
+      # # ---  get kubecontext for the AKS cluster ---
+      # - name: Get AKS credentials
+      #   run: |
+      #     az aks get-credentials \
+      #       --resource-group "${{ steps.tfout.outputs.rg }}" \
+      #       --name "${{ steps.tfout.outputs.aks }}" \
+      #       --admin \
+      #       --overwrite-existing
+
+      # # (optional) wait until nodes are ready to avoid flakiness
+      # - name: Wait for nodes
+      #   run: |
+      #     for i in {1..30}; do
+      #       kubectl get nodes && break
+      #       echo "Waiting for AKS nodes to be ready..."; sleep 10
+      #     done
+
+      # # ---  apply manifest ---
+      # - name: kubectl apply
+      #   run: kubectl apply -f deployment.yml
+
+```
+
+commit and push and go check the runner stuff
