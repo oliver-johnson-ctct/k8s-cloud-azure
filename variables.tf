@@ -1,3 +1,14 @@
+variable "suffix" {
+  description = "Suffix for resource names"
+  type        = number
+  default     = 2
+}
+
+variable "resource_group_name" {
+	description = "Resource group name"
+	type        = string
+	default     = "rg-trimble-002"
+}
 
 variable "prefix" {
 	description = "Name prefix"
@@ -33,12 +44,6 @@ variable "service_cidr" {
 	description = "Service CIDR for AKS"
 	type        = string
 	default     = "10.74.2.32/27"
-}
-
-variable "resource_group_name" {
-	description = "Resource group name"
-	type        = string
-	default     = "rg-trimble-001"
 }
 
 variable "nodepool_name" {
