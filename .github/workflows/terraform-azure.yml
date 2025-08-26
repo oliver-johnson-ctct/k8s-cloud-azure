@@ -16,12 +16,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      TF_VAR_appId: ${{ secrets.ARM_CLIENT_ID }}
-      TF_VAR_password: ${{ secrets.ARM_CLIENT_SECRET }}
+      AZ_CLIENT_ID: ${{ secrets.AZ_CLIENT_ID }}
+      AZ_CLIENT_SECRET: ${{ secrets.AZ_CLIENT_SECRET }}
+      AZ_TENANT_ID: ${{ secrets.AZ_TENANT_ID }}
+      AZ_SUBSCRIPTION_ID: ${{ secrets.AZ_SUBSCRIPTION_ID }}
+
 
     steps:
       - name: Checkout
@@ -34,17 +33,13 @@ jobs:
 
       - name: Terraform Init
         run: terraform init -input=false
-        working-directory: Azure
 
       - name: Terraform Validate
         run: terraform validate
-        working-directory: Azure
 
       - name: Terraform Plan
         run: terraform plan -out tfplan -input=false
-        working-directory: Azure
 
       - name: Terraform Apply (on workflow_dispatch or main)
         if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve tfplan
-        working-directory: Azure
