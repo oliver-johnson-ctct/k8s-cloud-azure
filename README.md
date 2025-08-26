@@ -185,4 +185,39 @@ go to terraform-azure.yml and uncomment the last bits:
 
 ```
 
-commit and push and go check the runner stuff
+commit and push and go check GitHub actions
+
+You can now  do this:
+
+kubectl get pods
+
+kubectl get svc
+
+curl the IP address of the Load Balancer note the pod that we hit
+do it again note the pod that we hit
+
+**Like we did yesterday after our `manual` deploy**
+
+## last bit
+
+In aks.tf file uncomment this:
+
+``` text
+# resource "azurerm_kubernetes_cluster_node_pool" "additional" {
+#   name                  = "two"
+#   kubernetes_cluster_id = azurerm_kubernetes_cluster.default.id
+#   vm_size               = var.node_vm_size
+#   node_count            = 2
+#   os_disk_size_gb       = 30
+# }
+```
+
+Commit/push and hopefully once it has built
+
+```bash
+
+kubectl get nodes
+
+```
+
+we had additional nodes
