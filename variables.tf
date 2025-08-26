@@ -10,6 +10,12 @@ variable "resource_group_name" {
 	default     = "rg-trimble-002"
 }
 
+variable "create_rg" {
+  description = "Create the RG (true) or reference an existing one (false)"
+  type        = bool
+  default     = true
+}
+
 variable "prefix" {
 	description = "Name prefix"
 	type        = string

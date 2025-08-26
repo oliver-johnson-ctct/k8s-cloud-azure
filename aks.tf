@@ -1,7 +1,7 @@
 resource "azurerm_kubernetes_cluster" "aks" {
   name                = var.aks_name
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = local.rg_loc
+  resource_group_name = local.rg_name
   dns_prefix          = "${var.prefix}-dns"
   sku_tier            = "Free"
   identity { type = "SystemAssigned" }
