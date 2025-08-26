@@ -57,29 +57,29 @@ jobs:
           echo "rg=$(terraform output -raw rg_name)" >> $GITHUB_OUTPUT
           echo "aks=$(terraform output -raw aks_name)" >> $GITHUB_OUTPUT
 
-      # # ---  install kubectl ---
-      # - name: Install kubectl
-      #   uses: azure/setup-kubectl@v4
-      #   with:
-      #     version: latest
+      # ---  install kubectl ---
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: latest
 
-      # # ---  get kubecontext for the AKS cluster ---
-      # - name: Get AKS credentials
-      #   run: |
-      #     az aks get-credentials \
-      #       --resource-group "${{ steps.tfout.outputs.rg }}" \
-      #       --name "${{ steps.tfout.outputs.aks }}" \
-      #       --admin \
-      #       --overwrite-existing
+      # ---  get kubecontext for the AKS cluster ---
+      - name: Get AKS credentials
+        run: |
+          az aks get-credentials \
+            --resource-group "${{ steps.tfout.outputs.rg }}" \
+            --name "${{ steps.tfout.outputs.aks }}" \
+            --admin \
+            --overwrite-existing
 
-      # # (optional) wait until nodes are ready to avoid flakiness
-      # - name: Wait for nodes
-      #   run: |
-      #     for i in {1..30}; do
-      #       kubectl get nodes && break
-      #       echo "Waiting for AKS nodes to be ready..."; sleep 10
-      #     done
+      # (optional) wait until nodes are ready to avoid flakiness
+      - name: Wait for nodes
+        run: |
+          for i in {1..30}; do
+            kubectl get nodes && break
+            echo "Waiting for AKS nodes to be ready..."; sleep 10
+          done
 
-      # # ---  apply manifest ---
-      # - name: kubectl apply
-      #   run: kubectl apply -f deployment.yml
+      # ---  apply manifest ---
+      - name: kubectl apply
+        run: kubectl apply -f deployment.yml
