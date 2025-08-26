@@ -79,5 +79,5 @@ variable "kubernetes_version" {
 variable "location" {
 	description = "Azure region"
 	type        = string
-	default     = "australiasoutheast"
+	default     = "australiaeast"
 }
