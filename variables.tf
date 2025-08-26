@@ -13,7 +13,7 @@ variable "resource_group_name" {
 variable "prefix" {
 	description = "Name prefix"
 	type        = string
-	default     = "aks002"
+	default     = "aks"
 }
 
 variable "aks_name" {
