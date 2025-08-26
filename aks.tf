@@ -22,31 +22,31 @@ resource "azurerm_kubernetes_cluster" "aks" {
 }
 
 
-# resource "azurerm_kubernetes_cluster_node_pool" "additional" {
-#   name                  = "two"
-#   kubernetes_cluster_id = azurerm_kubernetes_cluster.default.id
-#   vm_size               = var.node_vm_size
-#   node_count            = 2
-#   os_disk_size_gb       = 30
-# }
+ resource "azurerm_kubernetes_cluster_node_pool" "additional" {
+   name                  = "two"
+   kubernetes_cluster_id = azurerm_kubernetes_cluster.default.id
+   vm_size               = var.node_vm_size
+   node_count            = 2
+   os_disk_size_gb       = 30
+ }
 
-# data "azurerm_kubernetes_cluster" "credentials" {
-#   name                = azurerm_kubernetes_cluster.default.name
-#   resource_group_name = azurerm_resource_group.default.name
-# }
+ data "azurerm_kubernetes_cluster" "credentials" {
+   name                = azurerm_kubernetes_cluster.default.name
+   resource_group_name = azurerm_resource_group.default.name
+ }
 
-# provider "helm" {
-#   kubernetes {
-#     host                   = data.azurerm_kubernetes_cluster.credentials.kube_config.0.host
-#     client_certificate     = base64decode(data.azurerm_kubernetes_cluster.credentials.kube_config.0.client_certificate)
-#     client_key             = base64decode(data.azurerm_kubernetes_cluster.credentials.kube_config.0.client_key)
-#     cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.credentials.kube_config.0.cluster_ca_certificate)
+ provider "helm" {
+   kubernetes {
+     host                   = data.azurerm_kubernetes_cluster.credentials.kube_config.0.host
+     client_certificate     = base64decode(data.azurerm_kubernetes_cluster.credentials.kube_config.0.client_certificate)
+     client_key             = base64decode(data.azurerm_kubernetes_cluster.credentials.kube_config.0.client_key)
+     cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.credentials.kube_config.0.cluster_ca_certificate)
 
-#   }
-# }
+   }
+ }
 
-# resource "helm_release" "hello_kubernetes" {
-#   name       = "my-hello-kubernetes"
-#   repository = "https://helmcharts.opsmx.com/"
-#   chart      = "hello-kubernetes"
-# }
+ resource "helm_release" "hello_kubernetes" {
+   name       = "my-hello-kubernetes"
+   repository = "https://helmcharts.opsmx.com/"
+   chart      = "hello-kubernetes"
+ }
