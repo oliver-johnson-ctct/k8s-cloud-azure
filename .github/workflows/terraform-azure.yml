@@ -1,4 +1,4 @@
-name: terraform-ARMure
+name: terraform-azure
 
 on:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
     branches: [ main ]
     paths:
       - '**/*.tf'
-      - '.github/workflows/terraform-ARMure.yml'
+      - '.github/workflows/terraform-zzure.yml'
 
 permissions:
   contents: read
