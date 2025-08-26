@@ -31,13 +31,13 @@ variable "aks_name" {
 variable "vnet_address_space" {
 	description = "VNet CIDR"
 	type        = string
-	default     = "10.74.2.0/26"
+	default     = "10.74.2.0/24"
 }
 
 variable "subnet_address_prefix" {
-	description = "Subnet CIDR"
-	type        = string
-	default     = "10.74.2.0/27"
+  description = "Subnet CIDR"
+  type        = string
+  default     = "10.74.2.0/26" 
 }
 
 variable "dns_service_ip" {
@@ -49,7 +49,7 @@ variable "dns_service_ip" {
 variable "service_cidr" {
 	description = "Service CIDR for AKS"
 	type        = string
-	default     = "10.74.2.32/27"
+	default     = "10.74.2.32/26"
 }
 
 variable "nodepool_name" {
