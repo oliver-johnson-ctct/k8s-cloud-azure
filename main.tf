@@ -7,5 +7,7 @@ terraform {
     }
   }
 }
-provider "azurerm" { features {} }
+provider "azurerm" {
+  features {}
+}
 # For workshops we keep local state; for prod, configure an azurerm backend.

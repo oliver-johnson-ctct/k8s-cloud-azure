@@ -1,15 +1,72 @@
 
-variable "prefix"   { description = "Name prefix"; type = string; default = "aksdemo" }
-variable "aks_name"     { description = "AKS name"; type = string; default = "aks-cluster-002" }
-variable "vnet_address_space"  { description = "VNet CIDR"; type = string; default = "10.74.2.0/26" }
-variable "subnet_address_prefix" { description = "Subnet CIDR"; type = string; default = "10.74.2.0/27" }
-variable "dns_service_ip" { description = "DNS service IP for AKS"; type = string; default = "10.74.2.33" }
-variable "service_cidr"   { description = "Service CIDR for AKS"; type = string; default = "10.74.2.32/27" }
+variable "prefix" {
+	description = "Name prefix"
+	type        = string
+	default     = "aks002"
+}
 
+variable "aks_name" {
+	description = "AKS name"
+	type        = string
+	default     = "aks-cluster-002"
+}
 
-variable "resource_group_name" { description = "Resource group name"; type = string; default = "rg-trimble-001" }
-variable "nodepool_name" { description = "Node pool name"; type = string; default = "npapps001" }
-variable "node_vm_size" { description = "VM size"; type = string; default = "standard_b2s" }
-variable "node_count"   { description = "Initial node count"; type = number; default = 2 }
-variable "kubernetes_version" { description = "AKS version (optional)"; type = string; default = "" }
-variable "location" { description = "Azure region"; type = string; default = "australiaeast" }
+variable "vnet_address_space" {
+	description = "VNet CIDR"
+	type        = string
+	default     = "10.74.2.0/26"
+}
+
+variable "subnet_address_prefix" {
+	description = "Subnet CIDR"
+	type        = string
+	default     = "10.74.2.0/27"
+}
+
+variable "dns_service_ip" {
+	description = "DNS service IP for AKS"
+	type        = string
+	default     = "10.74.2.33"
+}
+
+variable "service_cidr" {
+	description = "Service CIDR for AKS"
+	type        = string
+	default     = "10.74.2.32/27"
+}
+
+variable "resource_group_name" {
+	description = "Resource group name"
+	type        = string
+	default     = "rg-trimble-001"
+}
+
+variable "nodepool_name" {
+	description = "Node pool name"
+	type        = string
+	default     = "npapps001"
+}
+
+variable "node_vm_size" {
+	description = "VM size"
+	type        = string
+	default     = "standard_b2s"
+}
+
+variable "node_count" {
+	description = "Initial node count"
+	type        = number
+	default     = 2
+}
+
+variable "kubernetes_version" {
+	description = "AKS version (optional)"
+	type        = string
+	default     = ""
+}
+
+variable "location" {
+	description = "Azure region"
+	type        = string
+	default     = "australiaeast"
+}
