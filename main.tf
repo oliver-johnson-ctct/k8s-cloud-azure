@@ -11,4 +11,9 @@ terraform {
 provider "azurerm" {
   skip_provider_registration = true
   features {}
+
+ # helm = {
+    #   source = "hashicorp/helm"
+    #   version = "~> 2.11.0"
+    # }
 }

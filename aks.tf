@@ -14,8 +14,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
   network_profile {
     network_plugin     = "azure"
     network_policy     = "azure"
-    dns_service_ip     = var.dns_service_ip
-    service_cidr       = var.service_cidr
   }
   role_based_access_control_enabled = true
   lifecycle {
