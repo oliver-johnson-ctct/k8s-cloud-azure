@@ -24,7 +24,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
  resource "azurerm_kubernetes_cluster_node_pool" "additional" {
    name                  = "two"
-   kubernetes_cluster_id = azurerm_kubernetes_cluster.default.id
+   kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
    vm_size               = var.node_vm_size
    node_count            = 2
    os_disk_size_gb       = 30
